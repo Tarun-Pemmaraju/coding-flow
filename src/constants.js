@@ -8,11 +8,37 @@ export const LANGUAGE_VERSIONS = {
 };
 
 export const CODE_SNIPPETS = {
-  javascript: `\nfunction greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\ngreet("Alex");\n`,
-  typescript: `\ntype Params = {\n\tname: string;\n}\n\nfunction greet(data: Params) {\n\tconsole.log("Hello, " + data.name + "!");\n}\n\ngreet({ name: "Alex" });\n`,
-  python: `\ndef greet(name):\n\tprint("Hello, " + name + "!")\n\ngreet("Alex")\n`,
-  java: `\npublic class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello World");\n\t}\n}\n`,
-  csharp:
-    'using System;\n\nnamespace HelloWorld\n{\n\tclass Hello { \n\t\tstatic void Main(string[] args) {\n\t\t\tConsole.WriteLine("Hello World in C#");\n\t\t}\n\t}\n}\n',
-  php: "<?php\n\n$name = 'Alex';\necho $name;\n",
+  javascript: `function twoSum(nums, target) {
+  // Your code here
+  return [];
+}
+`,
+  typescript: `function twoSum(nums: number[], target: number): number[] {
+  // Your code here
+  return [];
+}
+`,
+  python: `def twoSum(nums, target):
+    # Your code here
+    return []
+`,
+  java: `public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        // Your code here
+        return new int[]{};
+    }
+}
+`,
+  csharp: `public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        // Your code here
+        return new int[]{};
+    }
+}
+`,
+  php: `function twoSum($nums, $target) {
+    // Your code here
+    return [];
+}
+`,
 };

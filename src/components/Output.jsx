@@ -1,8 +1,8 @@
-import { useState } from "react";
+// (You can delete this file. No longer used.)
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import { executeCode } from "../api";
 
-const Output = ({ editorRef, language }) => {
+const Output = ({ editorRef, language, outputHeight = "10vh" }) => {
   const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,30 +30,30 @@ const Output = ({ editorRef, language }) => {
   };
 
   return (
-    <Box w="50%">
-      <Text mb={2} fontSize="lg">
-        Output
-      </Text>
+    <Box>
       <Button
         variant="outline"
         colorScheme="green"
-        mb={4}
+        mb={2}
+        size="sm"
         isLoading={isLoading}
         onClick={runCode}
       >
-        Run Code
+        Compile
       </Button>
       <Box
-        height="75vh"
+        height={outputHeight}
         p={2}
         color={isError ? "red.400" : ""}
         border="1px solid"
         borderRadius={4}
         borderColor={isError ? "red.500" : "#333"}
+        fontSize="sm"
+        overflowY="auto"
       >
         {output
           ? output.map((line, i) => <Text key={i}>{line}</Text>)
-          : 'Click "Run Code" to see the output here'}
+          : 'Click "Compile" to see the output here'}
       </Box>
     </Box>
   );

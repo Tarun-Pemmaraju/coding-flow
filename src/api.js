@@ -6,14 +6,18 @@ const API = axios.create({
 });
 
 export const executeCode = async (language, sourceCode) => {
-  const response = await API.post("/execute", {
-    language: language,
-    version: LANGUAGE_VERSIONS[language],
-    files: [
-      {
-        content: sourceCode,
-      },
-    ],
-  });
+  const response = await API.post(
+    "/execute",
+    {
+      language: language,
+      version: LANGUAGE_VERSIONS[language],
+      files: [
+        {
+          content: sourceCode,
+        },
+      ],
+    },
+    { timeout: 8000 } // 8 seconds timeout
+  );
   return response.data;
 };
