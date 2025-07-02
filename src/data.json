@@ -1,92 +1,357 @@
 [
   {
-    "question": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
-    "sampleInput": "nums = [2,7,11,15], target = 9",
-    "sampleOutput": "[0, 1]",
+    "title": "Valid Parentheses",
+    "question": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if:\n1. Open brackets are closed by the same type of brackets.\n2. Open brackets are closed in the correct order.\n3. Every closing bracket has a corresponding open bracket of the same type.",
+    "sampleInput": "s = \"()[]{}\"",
+    "sampleOutput": "true",
+    "constraints": [
+      "1 <= s.length <= 10^4",
+      "s consists of parentheses only: '()[]{}'"
+    ],
     "testCases": [
-      { "input": "nums = [2,7,11,15], target = 9", "expected": "[0, 1]" },
-      { "input": "nums = [3,2,4], target = 6", "expected": "[1, 2]" },
-      { "input": "nums = [3,3], target = 6", "expected": "[0, 1]" }
+      { "input": "s = \"()[]{}\"", "expected": "true" },
+      { "input": "s = \"(]\"", "expected": "false" },
+      { "input": "s = \"([)]\"", "expected": "false" }
     ],
     "internalTestCases": [
-      { "input": "nums = [2,7,11,15], target = 9", "expected": "[0, 1]" },
-      { "input": "nums = [3,2,4], target = 6", "expected": "[1, 2]" },
-      { "input": "nums = [3,3], target = 6", "expected": "[0, 1]" },
-      { "input": "nums = [1, 2, 3, 6], target = 7", "expected": "[0, 3]" },
-      { "input": "nums = [0,4,3,0], target = 0", "expected": "[0, 3]" },
-      { "input": "nums = [-1,-2,-3,-4,-5], target = -8", "expected": "[2, 4]" },
-      { "input": "nums = [1,5,1,5], target = 10", "expected": "[1, 3]" },
-      { "input": "nums = list(range(1, 10001)), target = 19999", "expected": "[9998, 9999]" },
-      { "input": "nums = [1] * 5000 + [5000], target = 5001", "expected": "[4999, 5000]" },
-      { "input": "nums = [10, 20, 10, 40, 50, 60, 70], target = 50", "expected": "[2, 3]" }
+      { "input": "s = \"()[]{}\"", "expected": "true" },
+      { "input": "s = \"(]\"", "expected": "false" },
+      { "input": "s = \"([)]\"", "expected": "false" },
+      { "input": "s = \"{[]}\"", "expected": "true" },
+      { "input": "s = \"((()))\"", "expected": "true" },
+      { "input": "s = \"((()\"", "expected": "false" },
+      { "input": "s = \"[[[[[]]]]]\"", "expected": "true" },
+      { "input": "s = \"[{()}]\"", "expected": "true" },
+      { "input": "s = \"[(])\"", "expected": "false" },
+      { "input": "s = \"{[({})]}\"", "expected": "true" }
     ],
     "codeSnippets": {
-      "javascript": "function twoSum(nums, target) {\n  // Your code here\n  return [];\n}\n",
-      "typescript": "function twoSum(nums: number[], target: number): number[] {\n  // Your code here\n  return [];\n}\n",
-      "python": "def twoSum(nums, target):\n    # Your code here\n    return []\n",
-      "java": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
-      "csharp": "public class Solution {\n    public int[] TwoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
-      "php": "function twoSum($nums, $target) {\n    // Your code here\n    return [];\n}\n"
+      "javascript": "function isValid(s) {\n  // Your code here\n  return false;\n}\n",
+      "typescript": "function isValid(s: string): boolean {\n  // Your code here\n  return false;\n}\n",
+      "python": "def isValid(s):\n    # Your code here\n    return False\n",
+      "java": "public class Solution {\n    public boolean isValid(String s) {\n        // Your code here\n        return false;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public bool IsValid(string s) {\n        // Your code here\n        return false;\n    }\n}\n",
+      "php": "function isValid($s) {\n    // Your code here\n    return false;\n}\n"
     }
   },
   {
-    "question": "Given a string s, return the longest palindromic substring in s.",
-    "sampleInput": "s = 'babad'",
-    "sampleOutput": "bab",
+    "title": "Longest Substring Without Repeating Characters",
+    "question": "Given a string s, find the length of the longest substring without repeating characters.",
+    "sampleInput": "s = \"abcabcbb\"",
+    "sampleOutput": "3",
+    "constraints": [
+      "0 <= s.length <= 5 * 10^4",
+      "s consists of English letters, digits, symbols and spaces"
+    ],
     "testCases": [
-      { "input": "s = babad", "expected": "bab" },
-      { "input": "s = cbbd", "expected": "bb" },
-      { "input": "s = a", "expected": "a" }
+      { "input": "s = \"abcabcbb\"", "expected": "3" },
+      { "input": "s = \"bbbbb\"", "expected": "1" },
+      { "input": "s = \"pwwkew\"", "expected": "3" }
     ],
     "internalTestCases": [
-      { "input": "s = babad", "expected": "bab" },
-      { "input": "s = cbbd", "expected": "bb" },
-      { "input": "s = a", "expected": "a" },
-      { "input": "s = ac", "expected": "a" },
-      { "input": "s = racecar", "expected": "racecar" },
-      { "input": "s = forgeeksskeegfor", "expected": "geeksskeeg" },
-      { "input": "s = abcd", "expected": "a" },
-      { "input": "s = abccba", "expected": "abccba" },
-      { "input": "s = noon", "expected": "noon" },
-      { "input": "s = anana", "expected": "anana" }
+      { "input": "s = \"abcabcbb\"", "expected": "3" },
+      { "input": "s = \"bbbbb\"", "expected": "1" },
+      { "input": "s = \"pwwkew\"", "expected": "3" },
+      { "input": "s = \"\"", "expected": "0" },
+      { "input": "s = \" \"", "expected": "1" },
+      { "input": "s = \"au\"", "expected": "2" },
+      { "input": "s = \"dvdf\"", "expected": "3" },
+      { "input": "s = \"abba\"", "expected": "2" },
+      { "input": "s = \"anviaj\"", "expected": "5" },
+      { "input": "s = \"tmmzuxt\"", "expected": "5" }
     ],
     "codeSnippets": {
-      "javascript": "function longestPalindrome(s) {\n  // Your code here\n  return '';\n}\n",
-      "typescript": "function longestPalindrome(s: string): string {\n  // Your code here\n  return '';\n}\n",
-      "python": "def longestPalindrome(s):\n    # Your code here\n    return ''\n",
-      "java": "public class Solution {\n    public String longestPalindrome(String s) {\n        // Your code here\n        return \"\";\n    }\n}\n",
-      "csharp": "public class Solution {\n    public string LongestPalindrome(string s) {\n        // Your code here\n        return \"\";\n    }\n}\n",
-      "php": "function longestPalindrome($s) {\n    // Your code here\n    return '';\n}\n"
+      "javascript": "function lengthOfLongestSubstring(s) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function lengthOfLongestSubstring(s: string): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def lengthOfLongestSubstring(s):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int LengthOfLongestSubstring(string s) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function lengthOfLongestSubstring($s) {\n    // Your code here\n    return 0;\n}\n"
     }
   },
   {
-    "question": "Given an integer n, return the number of trailing zeroes in n! (n factorial).",
-    "sampleInput": "n = 5",
-    "sampleOutput": "1",
+    "title": "Merge Two Sorted Lists",
+    "question": "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
+    "sampleInput": "list1 = [1,2,4], list2 = [1,3,4]",
+    "sampleOutput": "[1,1,2,3,4,4]",
+    "constraints": [
+      "The number of nodes in both lists is in the range [0, 50]",
+      "-100 <= Node.val <= 100",
+      "Both list1 and list2 are sorted in non-decreasing order"
+    ],
     "testCases": [
-      { "input": "n = 5", "expected": "1" },
-      { "input": "n = 10", "expected": "2" },
-      { "input": "n = 25", "expected": "6" }
+      { "input": "list1 = [1,2,4], list2 = [1,3,4]", "expected": "[1,1,2,3,4,4]" },
+      { "input": "list1 = [], list2 = []", "expected": "[]" },
+      { "input": "list1 = [], list2 = [0]", "expected": "[0]" }
     ],
     "internalTestCases": [
-      { "input": "n = 5", "expected": "1" },
-      { "input": "n = 10", "expected": "2" },
-      { "input": "n = 25", "expected": "6" },
-      { "input": "n = 100", "expected": "24" },
-      { "input": "n = 50", "expected": "12" },
-      { "input": "n = 0", "expected": "0" },
-      { "input": "n = 1", "expected": "0" },
-      { "input": "n = 200", "expected": "49" },
-      { "input": "n = 1000", "expected": "249" },
-      { "input": "n = 10000", "expected": "2499" }
+      { "input": "list1 = [1,2,4], list2 = [1,3,4]", "expected": "[1,1,2,3,4,4]" },
+      { "input": "list1 = [], list2 = []", "expected": "[]" },
+      { "input": "list1 = [], list2 = [0]", "expected": "[0]" },
+      { "input": "list1 = [2], list2 = [1]", "expected": "[1,2]" },
+      { "input": "list1 = [5,6], list2 = [1,2,3]", "expected": "[1,2,3,5,6]" },
+      { "input": "list1 = [1,1,1], list2 = [1,1,1]", "expected": "[1,1,1,1,1,1]" },
+      { "input": "list1 = [1,3,5,7], list2 = [2,4,6,8]", "expected": "[1,2,3,4,5,6,7,8]" },
+      { "input": "list1 = [10], list2 = [2,9]", "expected": "[2,9,10]" },
+      { "input": "list1 = [0,2,3], list2 = [1,4]", "expected": "[0,1,2,3,4]" },
+      { "input": "list1 = [1,2], list2 = [3,4]", "expected": "[1,2,3,4]" }
     ],
     "codeSnippets": {
-      "javascript": "function trailingZeroes(n) {\n  // Your code here\n  return 0;\n}\n",
-      "typescript": "function trailingZeroes(n: number): number {\n  // Your code here\n  return 0;\n}\n",
-      "python": "def trailingZeroes(n):\n    # Your code here\n    return 0\n",
-      "java": "public class Solution {\n    public int trailingZeroes(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
-      "csharp": "public class Solution {\n    public int TrailingZeroes(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
-      "php": "function trailingZeroes($n) {\n    // Your code here\n    return 0;\n}\n"
+      "javascript": "function mergeTwoLists(list1, list2) {\n  // Your code here\n  return null;\n}\n",
+      "typescript": "function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {\n  // Your code here\n  return null;\n}\n",
+      "python": "def mergeTwoLists(list1, list2):\n    # Your code here\n    return None\n",
+      "java": "public class Solution {\n    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n        // Your code here\n        return null;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public ListNode MergeTwoLists(ListNode list1, ListNode list2) {\n        // Your code here\n        return null;\n    }\n}\n",
+      "php": "function mergeTwoLists($list1, $list2) {\n    // Your code here\n    return null;\n}\n"
+    }
+  },
+  {
+    "title": "Best Time to Buy and Sell Stock",
+    "question": "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+    "sampleInput": "prices = [7,1,5,3,6,4]",
+    "sampleOutput": "5",
+    "constraints": [
+      "1 <= prices.length <= 10^5",
+      "0 <= prices[i] <= 10^4"
+    ],
+    "testCases": [
+      { "input": "prices = [7,1,5,3,6,4]", "expected": "5" },
+      { "input": "prices = [7,6,4,3,1]", "expected": "0" },
+      { "input": "prices = [1,2,3,4,5]", "expected": "4" }
+    ],
+    "internalTestCases": [
+      { "input": "prices = [7,1,5,3,6,4]", "expected": "5" },
+      { "input": "prices = [7,6,4,3,1]", "expected": "0" },
+      { "input": "prices = [1,2,3,4,5]", "expected": "4" },
+      { "input": "prices = [2,4,1]", "expected": "2" },
+      { "input": "prices = [3,3,5,0,0,3,1,4]", "expected": "4" },
+      { "input": "prices = [1]", "expected": "0" },
+      { "input": "prices = [2,1,2,1,0,1,2]", "expected": "2" },
+      { "input": "prices = [2,1,2,0,1]", "expected": "1" },
+      { "input": "prices = [2,1,2,1,0,1,2,3]", "expected": "3" },
+      { "input": "prices = [2,2,2,2,2]", "expected": "0" }
+    ],
+    "codeSnippets": {
+      "javascript": "function maxProfit(prices) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function maxProfit(prices: number[]): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def maxProfit(prices):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int maxProfit(int[] prices) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int MaxProfit(int[] prices) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function maxProfit($prices) {\n    // Your code here\n    return 0;\n}\n"
+    }
+  },
+  {
+    "title": "Valid Anagram",
+    "question": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+    "sampleInput": "s = \"anagram\", t = \"nagaram\"",
+    "sampleOutput": "true",
+    "constraints": [
+      "1 <= s.length, t.length <= 5 * 10^4",
+      "s and t consist of lowercase English letters"
+    ],
+    "testCases": [
+      { "input": "s = \"anagram\", t = \"nagaram\"", "expected": "true" },
+      { "input": "s = \"rat\", t = \"car\"", "expected": "false" },
+      { "input": "s = \"aacc\", t = \"ccac\"", "expected": "false" }
+    ],
+    "internalTestCases": [
+      { "input": "s = \"anagram\", t = \"nagaram\"", "expected": "true" },
+      { "input": "s = \"rat\", t = \"car\"", "expected": "false" },
+      { "input": "s = \"aacc\", t = \"ccac\"", "expected": "false" },
+      { "input": "s = \"listen\", t = \"silent\"", "expected": "true" },
+      { "input": "s = \"hello\", t = \"oellh\"", "expected": "true" },
+      { "input": "s = \"test\", t = \"ttew\"", "expected": "false" },
+      { "input": "s = \"a\", t = \"a\"", "expected": "true" },
+      { "input": "s = \"ab\", t = \"ba\"", "expected": "true" },
+      { "input": "s = \"ab\", t = \"a\"", "expected": "false" },
+      { "input": "s = \"abcd\", t = \"dcba\"", "expected": "true" }
+    ],
+    "codeSnippets": {
+      "javascript": "function isAnagram(s, t) {\n  // Your code here\n  return false;\n}\n",
+      "typescript": "function isAnagram(s: string, t: string): boolean {\n  // Your code here\n  return false;\n}\n",
+      "python": "def isAnagram(s, t):\n    # Your code here\n    return False\n",
+      "java": "public class Solution {\n    public boolean isAnagram(String s, String t) {\n        // Your code here\n        return false;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public bool IsAnagram(string s, string t) {\n        // Your code here\n        return false;\n    }\n}\n",
+      "php": "function isAnagram($s, $t) {\n    // Your code here\n    return false;\n}\n"
+    }
+  },
+  {
+    "title": "Majority Element",
+    "question": "Given an array nums of size n, return the majority element. The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.",
+    "sampleInput": "nums = [3,2,3]",
+    "sampleOutput": "3",
+    "constraints": [
+      "n == nums.length",
+      "1 <= n <= 5 * 10^4",
+      "-10^9 <= nums[i] <= 10^9",
+      "The majority element always exists in the array"
+    ],
+    "testCases": [
+      { "input": "nums = [3,2,3]", "expected": "3" },
+      { "input": "nums = [2,2,1,1,1,2,2]", "expected": "2" },
+      { "input": "nums = [1]", "expected": "1" }
+    ],
+    "internalTestCases": [
+      { "input": "nums = [3,2,3]", "expected": "3" },
+      { "input": "nums = [2,2,1,1,1,2,2]", "expected": "2" },
+      { "input": "nums = [1]", "expected": "1" },
+      { "input": "nums = [6,6,6,7,7]", "expected": "6" },
+      { "input": "nums = [4,4,4,4,1,2,3]", "expected": "4" },
+      { "input": "nums = [9,9,9,9,9,1,2,3,4]", "expected": "9" },
+      { "input": "nums = [1,2,3,1,1]", "expected": "1" },
+      { "input": "nums = [5,5,5,2,2,2,5]", "expected": "5" },
+      { "input": "nums = [0,0,0,0,1,1]", "expected": "0" },
+      { "input": "nums = [8,8,7,7,7,7,8,8,8,8,8]", "expected": "8" }
+    ],
+    "codeSnippets": {
+      "javascript": "function majorityElement(nums) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function majorityElement(nums: number[]): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def majorityElement(nums):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int majorityElement(int[] nums) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int MajorityElement(int[] nums) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function majorityElement($nums) {\n    // Your code here\n    return 0;\n}\n"
+    }
+  },
+  {
+    "title": "Climbing Stairs",
+    "question": "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+    "sampleInput": "n = 2",
+    "sampleOutput": "2",
+    "constraints": [
+      "1 <= n <= 45"
+    ],
+    "testCases": [
+      { "input": "n = 2", "expected": "2" },
+      { "input": "n = 3", "expected": "3" },
+      { "input": "n = 5", "expected": "8" }
+    ],
+    "internalTestCases": [
+      { "input": "n = 2", "expected": "2" },
+      { "input": "n = 3", "expected": "3" },
+      { "input": "n = 5", "expected": "8" },
+      { "input": "n = 1", "expected": "1" },
+      { "input": "n = 4", "expected": "5" },
+      { "input": "n = 6", "expected": "13" },
+      { "input": "n = 7", "expected": "21" },
+      { "input": "n = 10", "expected": "89" },
+      { "input": "n = 20", "expected": "10946" },
+      { "input": "n = 30", "expected": "1346269" }
+    ],
+    "codeSnippets": {
+      "javascript": "function climbStairs(n) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function climbStairs(n: number): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def climbStairs(n):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int climbStairs(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int ClimbStairs(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function climbStairs($n) {\n    // Your code here\n    return 0;\n}\n"
+    }
+  },
+  {
+    "title": "Remove Duplicates from Sorted Array",
+    "question": "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Return the number of unique elements in nums. You must do this by modifying the input array in-place with O(1) extra memory.",
+    "sampleInput": "nums = [1,1,2]",
+    "sampleOutput": "2",
+    "constraints": [
+      "1 <= nums.length <= 3 * 10^4",
+      "-100 <= nums[i] <= 100",
+      "nums is sorted in non-decreasing order"
+    ],
+    "testCases": [
+      { "input": "nums = [1,1,2]", "expected": "2" },
+      { "input": "nums = [0,0,1,1,1,2,2,3,3,4]", "expected": "5" },
+      { "input": "nums = [1,2,3]", "expected": "3" }
+    ],
+    "internalTestCases": [
+      { "input": "nums = [1,1,2]", "expected": "2" },
+      { "input": "nums = [0,0,1,1,1,2,2,3,3,4]", "expected": "5" },
+      { "input": "nums = [1,2,3]", "expected": "3" },
+      { "input": "nums = [1,1,1,1]", "expected": "1" },
+      { "input": "nums = [1]", "expected": "1" },
+      { "input": "nums = [-1,0,0,0,0,3,3]", "expected": "3" },
+      { "input": "nums = [-100,-100,-50,0,100]", "expected": "4" },
+      { "input": "nums = [1,1,2,2,3,3]", "expected": "3" },
+      { "input": "nums = [1,2,2,2,3,4,4,5]", "expected": "5" },
+      { "input": "nums = [1,1,1,1,2,2,3,4,5]", "expected": "5" }
+    ],
+    "codeSnippets": {
+      "javascript": "function removeDuplicates(nums) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function removeDuplicates(nums: number[]): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def removeDuplicates(nums):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int removeDuplicates(int[] nums) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int RemoveDuplicates(int[] nums) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function removeDuplicates(&$nums) {\n    // Your code here\n    return 0;\n}\n"
+    }
+  },
+  {
+    "title": "Intersection of Two Arrays II",
+    "question": "Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays, and you may return the result in any order.",
+    "sampleInput": "nums1 = [1,2,2,1], nums2 = [2,2]",
+    "sampleOutput": "[2,2]",
+    "constraints": [
+      "1 <= nums1.length, nums2.length <= 1000",
+      "0 <= nums1[i], nums2[i] <= 1000"
+    ],
+    "testCases": [
+      { "input": "nums1 = [1,2,2,1], nums2 = [2,2]", "expected": "[2,2]" },
+      { "input": "nums1 = [4,9,5], nums2 = [9,4,9,8,4]", "expected": "[4,9]" },
+      { "input": "nums1 = [1,2,3], nums2 = [4,5,6]", "expected": "[]" }
+    ],
+    "internalTestCases": [
+      { "input": "nums1 = [1,2,2,1], nums2 = [2,2]", "expected": "[2,2]" },
+      { "input": "nums1 = [4,9,5], nums2 = [9,4,9,8,4]", "expected": "[4,9]" },
+      { "input": "nums1 = [1,2,3], nums2 = [4,5,6]", "expected": "[]" },
+      { "input": "nums1 = [1,1,1,1], nums2 = [1,1]", "expected": "[1,1]" },
+      { "input": "nums1 = [2,2], nums2 = [2]", "expected": "[2]" },
+      { "input": "nums1 = [5,6,7], nums2 = [7,6,5]", "expected": "[5,6,7]" },
+      { "input": "nums1 = [1,2,2,1], nums2 = [2]", "expected": "[2]" },
+      { "input": "nums1 = [3,1,2], nums2 = [1,1]", "expected": "[1]" },
+      { "input": "nums1 = [0,1,2,3], nums2 = [1,1,2,2]", "expected": "[1,2]" },
+      { "input": "nums1 = [1000], nums2 = [1000]", "expected": "[1000]" }
+    ],
+    "codeSnippets": {
+      "javascript": "function intersect(nums1, nums2) {\n  // Your code here\n  return [];\n}\n",
+      "typescript": "function intersect(nums1: number[], nums2: number[]): number[] {\n  // Your code here\n  return [];\n}\n",
+      "python": "def intersect(nums1, nums2):\n    # Your code here\n    return []\n",
+      "java": "public class Solution {\n    public int[] intersect(int[] nums1, int[] nums2) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int[] Intersect(int[] nums1, int[] nums2) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
+      "php": "function intersect($nums1, $nums2) {\n    // Your code here\n    return [];\n}\n"
+    }
+  },
+  {
+    "title": "Binary Search",
+    "question": "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.",
+    "sampleInput": "nums = [-1,0,3,5,9,12], target = 9",
+    "sampleOutput": "4",
+    "constraints": [
+      "1 <= nums.length <= 10^4",
+      "-10^4 < nums[i], target < 10^4",
+      "All the integers in nums are unique.",
+      "nums is sorted in ascending order"
+    ],
+    "testCases": [
+      { "input": "nums = [-1,0,3,5,9,12], target = 9", "expected": "4" },
+      { "input": "nums = [-1,0,3,5,9,12], target = 2", "expected": "-1" },
+      { "input": "nums = [5], target = 5", "expected": "0" }
+    ],
+    "internalTestCases": [
+      { "input": "nums = [-1,0,3,5,9,12], target = 9", "expected": "4" },
+      { "input": "nums = [-1,0,3,5,9,12], target = 2", "expected": "-1" },
+      { "input": "nums = [5], target = 5", "expected": "0" },
+      { "input": "nums = [1,3,5,7,9,11], target = 1", "expected": "0" },
+      { "input": "nums = [1,3,5,7,9,11], target = 11", "expected": "5" },
+      { "input": "nums = [2,4,6,8,10,12,14], target = 7", "expected": "-1" },
+      { "input": "nums = [1,2,3,4,5,6,7,8,9,10], target = 10", "expected": "9" },
+      { "input": "nums = [10,20,30,40,50], target = 40", "expected": "3" },
+      { "input": "nums = [-10,-5,0,3,8,12,19], target = -5", "expected": "1" },
+      { "input": "nums = [100,200,300,400,500], target = 600", "expected": "-1" }
+    ],
+    "codeSnippets": {
+      "javascript": "function search(nums, target) {\n  // Your code here\n  return -1;\n}\n",
+      "typescript": "function search(nums: number[], target: number): number {\n  // Your code here\n  return -1;\n}\n",
+      "python": "def search(nums, target):\n    # Your code here\n    return -1\n",
+      "java": "public class Solution {\n    public int search(int[] nums, int target) {\n        // Your code here\n        return -1;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int Search(int[] nums, int target) {\n        // Your code here\n        return -1;\n    }\n}\n",
+      "php": "function search($nums, $target) {\n    // Your code here\n    return -1;\n}\n"
     }
   }
 ]

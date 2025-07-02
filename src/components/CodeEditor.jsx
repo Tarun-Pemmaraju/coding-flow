@@ -29,7 +29,8 @@ const CodeEditor = ({
   testCases,
   internalTestCases,
   codeSnippets,
-  defaultLanguage = "javascript"
+  defaultLanguage = "javascript",
+  onQuestionComplete // <-- add this prop
 }) => {
   const editorRef = useRef();
   const [language, setLanguage] = useState(defaultLanguage);
@@ -418,13 +419,10 @@ const CodeEditor = ({
     const explanation = speechText;
 
     // If in optimal step (all 10 passed and user is explaining changes)
-    // REMOVE the second optimal step logic, just end exam if explanation is correct
     if (isOptimalStep && allTestcasesPassed) {
-      // If first explanation for optimal, store it
       if (!firstExplanation) setFirstExplanation(explanation);
 
       try {
-        // Call question_code_exp.py for explanation evaluation
         const res = await fetch("/python/question_code_exp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -433,7 +431,7 @@ const CodeEditor = ({
         const data = await res.json();
         const result = (data.result || "").trim();
         if (result === "0") {
-          setExamState("end");
+          if (onQuestionComplete) onQuestionComplete(); // <-- notify parent
           toast({
             title: "Exam Completed",
             description: "You passed all testcases and correctly explained your code. Exam ended.",
@@ -511,7 +509,7 @@ const CodeEditor = ({
       if (result === "0") {
         // If user had passed all 10 testcases and explanation is correct, end exam
         if (allTestcasesPassed) {
-          setExamState("end");
+          if (onQuestionComplete) onQuestionComplete(); // <-- notify parent
           toast({
             title: "Exam Completed",
             description: "You passed all testcases and correctly explained your code. Exam ended.",
