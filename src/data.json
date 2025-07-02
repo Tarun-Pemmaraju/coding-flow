@@ -1,0 +1,92 @@
+[
+  {
+    "question": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+    "sampleInput": "nums = [2,7,11,15], target = 9",
+    "sampleOutput": "[0, 1]",
+    "testCases": [
+      { "input": "nums = [2,7,11,15], target = 9", "expected": "[0, 1]" },
+      { "input": "nums = [3,2,4], target = 6", "expected": "[1, 2]" },
+      { "input": "nums = [3,3], target = 6", "expected": "[0, 1]" }
+    ],
+    "internalTestCases": [
+      { "input": "nums = [2,7,11,15], target = 9", "expected": "[0, 1]" },
+      { "input": "nums = [3,2,4], target = 6", "expected": "[1, 2]" },
+      { "input": "nums = [3,3], target = 6", "expected": "[0, 1]" },
+      { "input": "nums = [1, 2, 3, 6], target = 7", "expected": "[0, 3]" },
+      { "input": "nums = [0,4,3,0], target = 0", "expected": "[0, 3]" },
+      { "input": "nums = [-1,-2,-3,-4,-5], target = -8", "expected": "[2, 4]" },
+      { "input": "nums = [1,5,1,5], target = 10", "expected": "[1, 3]" },
+      { "input": "nums = list(range(1, 10001)), target = 19999", "expected": "[9998, 9999]" },
+      { "input": "nums = [1] * 5000 + [5000], target = 5001", "expected": "[4999, 5000]" },
+      { "input": "nums = [10, 20, 10, 40, 50, 60, 70], target = 50", "expected": "[2, 3]" }
+    ],
+    "codeSnippets": {
+      "javascript": "function twoSum(nums, target) {\n  // Your code here\n  return [];\n}\n",
+      "typescript": "function twoSum(nums: number[], target: number): number[] {\n  // Your code here\n  return [];\n}\n",
+      "python": "def twoSum(nums, target):\n    # Your code here\n    return []\n",
+      "java": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int[] TwoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n",
+      "php": "function twoSum($nums, $target) {\n    // Your code here\n    return [];\n}\n"
+    }
+  },
+  {
+    "question": "Given a string s, return the longest palindromic substring in s.",
+    "sampleInput": "s = 'babad'",
+    "sampleOutput": "bab",
+    "testCases": [
+      { "input": "s = babad", "expected": "bab" },
+      { "input": "s = cbbd", "expected": "bb" },
+      { "input": "s = a", "expected": "a" }
+    ],
+    "internalTestCases": [
+      { "input": "s = babad", "expected": "bab" },
+      { "input": "s = cbbd", "expected": "bb" },
+      { "input": "s = a", "expected": "a" },
+      { "input": "s = ac", "expected": "a" },
+      { "input": "s = racecar", "expected": "racecar" },
+      { "input": "s = forgeeksskeegfor", "expected": "geeksskeeg" },
+      { "input": "s = abcd", "expected": "a" },
+      { "input": "s = abccba", "expected": "abccba" },
+      { "input": "s = noon", "expected": "noon" },
+      { "input": "s = anana", "expected": "anana" }
+    ],
+    "codeSnippets": {
+      "javascript": "function longestPalindrome(s) {\n  // Your code here\n  return '';\n}\n",
+      "typescript": "function longestPalindrome(s: string): string {\n  // Your code here\n  return '';\n}\n",
+      "python": "def longestPalindrome(s):\n    # Your code here\n    return ''\n",
+      "java": "public class Solution {\n    public String longestPalindrome(String s) {\n        // Your code here\n        return \"\";\n    }\n}\n",
+      "csharp": "public class Solution {\n    public string LongestPalindrome(string s) {\n        // Your code here\n        return \"\";\n    }\n}\n",
+      "php": "function longestPalindrome($s) {\n    // Your code here\n    return '';\n}\n"
+    }
+  },
+  {
+    "question": "Given an integer n, return the number of trailing zeroes in n! (n factorial).",
+    "sampleInput": "n = 5",
+    "sampleOutput": "1",
+    "testCases": [
+      { "input": "n = 5", "expected": "1" },
+      { "input": "n = 10", "expected": "2" },
+      { "input": "n = 25", "expected": "6" }
+    ],
+    "internalTestCases": [
+      { "input": "n = 5", "expected": "1" },
+      { "input": "n = 10", "expected": "2" },
+      { "input": "n = 25", "expected": "6" },
+      { "input": "n = 100", "expected": "24" },
+      { "input": "n = 50", "expected": "12" },
+      { "input": "n = 0", "expected": "0" },
+      { "input": "n = 1", "expected": "0" },
+      { "input": "n = 200", "expected": "49" },
+      { "input": "n = 1000", "expected": "249" },
+      { "input": "n = 10000", "expected": "2499" }
+    ],
+    "codeSnippets": {
+      "javascript": "function trailingZeroes(n) {\n  // Your code here\n  return 0;\n}\n",
+      "typescript": "function trailingZeroes(n: number): number {\n  // Your code here\n  return 0;\n}\n",
+      "python": "def trailingZeroes(n):\n    # Your code here\n    return 0\n",
+      "java": "public class Solution {\n    public int trailingZeroes(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "csharp": "public class Solution {\n    public int TrailingZeroes(int n) {\n        // Your code here\n        return 0;\n    }\n}\n",
+      "php": "function trailingZeroes($n) {\n    // Your code here\n    return 0;\n}\n"
+    }
+  }
+]

@@ -6,11 +6,12 @@ const API = axios.create({
 });
 
 export const executeCode = async (language, sourceCode) => {
+  const version = LANGUAGE_VERSIONS[language] || Object.values(LANGUAGE_VERSIONS)[0];
   const response = await API.post(
     "/execute",
     {
       language: language,
-      version: LANGUAGE_VERSIONS[language],
+      version: version,
       files: [
         {
           content: sourceCode,

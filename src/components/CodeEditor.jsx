@@ -21,50 +21,19 @@ import {
 import { EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Editor } from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
-import { CODE_SNIPPETS } from "../constants";
-import { executeCode } from "../api";
 import React from "react";
+import { executeCode } from "../api"; // <-- Add this line
 
-const TEST_CASES = [
-  {
-    input: "nums = [2,7,11,15], target = 9",
-    expected: "[0, 1]",
-  },
-  {
-    input: "nums = [3,2,4], target = 6",
-    expected: "[1, 2]",
-  },
-  {
-    input: "nums = [3,3], target = 6",
-    expected: "[0, 1]",
-  },
-];
-
-const INTERNAL_TEST_CASES = [
-  { input: "nums = [2,7,11,15], target = 9", expected: "[0, 1]" },
-  { input: "nums = [3,2,4], target = 6", expected: "[1, 2]" },
-  { input: "nums = [3,3], target = 6", expected: "[0, 1]" },
-  { input: "nums = [1, 2, 3, 6], target = 7", expected: "[0, 3]" },
-  { input: "nums = [0,4,3,0], target = 0", expected: "[0, 3]" },
-  { input: "nums = [-1,-2,-3,-4,-5], target = -8", expected: "[2, 4]" },
-  { input: "nums = [1,5,1,5], target = 10", expected: "[1, 3]" },
-  { input: "nums = list(range(1, 10001)), target = 19999", expected: "[9998, 9999]" },
-  { input: "nums = [1] * 5000 + [5000], target = 5001", expected: "[4999, 5000]" },
-  { input: "nums = [10, 20, 10, 40, 50, 60, 70], target = 50", expected: "[2, 3]" },
-];
-
-const DEFAULT_USER_TESTCASES = [
-  { input: "nums = [2,7,11,15], target = 9", expected: "[0, 1]" },
-  { input: "nums = [3,2,4], target = 6", expected: "[1, 2]" },
-  { input: "nums = [3,3], target = 6", expected: "[0, 1]" },
-];
-
-const QUESTION_TEXT = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.`;
-
-const CodeEditor = () => {
+const CodeEditor = ({
+  question,
+  testCases,
+  internalTestCases,
+  codeSnippets,
+  defaultLanguage = "javascript"
+}) => {
   const editorRef = useRef();
-  const [language, setLanguage] = useState("javascript");
-  const [value, setValue] = useState(CODE_SNIPPETS["javascript"]);
+  const [language, setLanguage] = useState(defaultLanguage);
+  const [value, setValue] = useState(codeSnippets[defaultLanguage]);
   const [showTestcases, setShowTestcases] = useState(false);
   const [testResults, setTestResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,10 +42,10 @@ const CodeEditor = () => {
   const toast = useToast();
   const [output, setOutput] = useState("");
   const [outputError, setOutputError] = useState(false);
-  const [userTestcases, setUserTestcases] = useState(DEFAULT_USER_TESTCASES);
+  const [userTestcases, setUserTestcases] = useState(testCases);
   const [editingTestcases, setEditingTestcases] = useState(false);
   const [testcaseText, setTestcaseText] = useState(
-    DEFAULT_USER_TESTCASES.map(tc => `${tc.input} => ${tc.expected}`).join("\n")
+    testCases.map(tc => `${tc.input} => ${tc.expected}`).join("\n")
   );
   const [compileResults, setCompileResults] = useState([]);
   const [showSpeechModal, setShowSpeechModal] = useState(false);
@@ -94,6 +63,8 @@ const CodeEditor = () => {
   const [isOptimalStep, setIsOptimalStep] = useState(false);
   const [allTestcasesPassed, setAllTestcasesPassed] = useState(false);
   const [optimalStepCount, setOptimalStepCount] = useState(0); // <-- add this state
+  // Add state for internal testcases
+  const [internalTests, setInternalTests] = useState(internalTestCases);
 
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -102,7 +73,7 @@ const CodeEditor = () => {
 
   const onSelect = (language) => {
     setLanguage(language);
-    setValue(CODE_SNIPPETS[language]);
+    setValue(codeSnippets[language]);
   };
 
   const parseTestcases = (text) => {
@@ -140,6 +111,82 @@ const CodeEditor = () => {
     setEditingTestcases(false);
   };
 
+  // Utility to extract function name from code snippet
+  const getFunctionName = (code, language) => {
+    if (language === "javascript" || language === "typescript") {
+      const match = code.match(/function\s+([a-zA-Z0-9_]+)/);
+      return match ? match[1] : null;
+    }
+    if (language === "python") {
+      const match = code.match(/def\s+([a-zA-Z0-9_]+)/);
+      return match ? match[1] : null;
+    }
+    if (language === "java") {
+      const match = code.match(/public\s+\w+\s+([a-zA-Z0-9_]+)\s*\(/);
+      return match ? match[1] : null;
+    }
+    if (language === "csharp") {
+      const match = code.match(/public\s+\w+\s+([a-zA-Z0-9_]+)\s*\(/i);
+      return match ? match[1] : null;
+    }
+    if (language === "php") {
+      const match = code.match(/function\s+([a-zA-Z0-9_]+)/);
+      return match ? match[1] : null;
+    }
+    return null;
+  };
+
+  // Utility to split on commas not inside brackets/parentheses
+  function smartSplit(input) {
+    const result = [];
+    let current = '';
+    let depth = 0;
+    for (let i = 0; i < input.length; i++) {
+      const c = input[i];
+      if (c === '[' || c === '(') depth++;
+      if (c === ']' || c === ')') depth--;
+      if (c === ',' && depth === 0) {
+        result.push(current);
+        current = '';
+      } else {
+        current += c;
+      }
+    }
+    if (current) result.push(current);
+    return result;
+  }
+
+  // Utility to parse input and wrap string values in quotes if needed
+  const formatInputArgs = (input, language) => {
+    // Use smartSplit to avoid splitting inside arrays
+    return smartSplit(input).map(part => {
+      let [key, val] = part.split("=").map(s => s.trim());
+      if (!val) return "";
+
+      // Fix Python array formatting: ensure spaces after commas inside brackets
+      if (language === "python" && /^\[.*\]$/.test(val)) {
+        val = val.replace(/\s*,\s*/g, ", ");
+      }
+
+      // If value is a string literal (letters only, not quoted, not a number, not an array/object/expression)
+      if (
+        typeof val === "string" &&
+        !val.startsWith("[") &&
+        !val.startsWith("{") &&
+        !val.startsWith("list(") &&
+        !val.match(/^[-+]?\d+(\.\d+)?$/) &&
+        !(val.startsWith("'") || val.startsWith('"'))
+      ) {
+        if (/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(val)) {
+          if (language === "python" || language === "javascript" || language === "typescript") {
+            val = `'${val}'`;
+          }
+        }
+      }
+      return val;
+    }).filter(Boolean).join(", ");
+  };
+
   const runTestcases = async () => {
     if (!editorRef.current) return;
     const sourceCode = editorRef.current.getValue();
@@ -150,14 +197,18 @@ const CodeEditor = () => {
     setOutput("");
     setOutputError(false);
 
+    // Dynamically get function name from code snippet
+    const functionName = getFunctionName(codeSnippets[language], language) || "twoSum";
+
     const results = [];
     for (const test of userTestcases) {
       try {
         let codeToRun = sourceCode;
+        const args = formatInputArgs(test.input, language);
         if (language === "javascript") {
-          codeToRun += `\nconsole.log(twoSum(${test.input.replace("nums = ", "").replace("target = ", "")}));`;
+          codeToRun += `\nconsole.log(${functionName}(${args}));`;
         } else if (language === "python") {
-          codeToRun += `\nprint(twoSum(${test.input.replace("nums = ", "").replace("target = ", "")}))`;
+          codeToRun += `\nprint(${functionName}(${args}))`;
         }
         const { run: result } = await executeCode(language, codeToRun);
         const output = (result.output || "").trim().split("\n").pop();
@@ -187,14 +238,19 @@ const CodeEditor = () => {
     setRunLoading(true);
     setRunResults([]);
 
-    const testsToRun = INTERNAL_TEST_CASES;
+    // Use internalTests state instead of prop
+    const testsToRun = internalTests;
+    // Dynamically get function name from code snippet
+    const functionName = getFunctionName(codeSnippets[language], language) || "twoSum";
+
     const results = [];
     for (const test of testsToRun) {
       let codeToRun = sourceCode;
+      const args = formatInputArgs(test.input, language);
       if (language === "javascript") {
-        codeToRun += `\nconsole.log(twoSum(${test.input.replace("nums = ", "").replace("target = ", "")}));`;
+        codeToRun += `\nconsole.log(${functionName}(${args}));`;
       } else if (language === "python") {
-        codeToRun += `\nprint(twoSum(${test.input.replace("nums = ", "").replace("target = ", "")}))`;
+        codeToRun += `\nprint(${functionName}(${args}))`;
       }
       try {
         const result = await Promise.race([
@@ -328,26 +384,36 @@ const CodeEditor = () => {
     setExamState("coding");
     setShowSpeechModal(false);
     setExplanationAttempts(0);
-    setValue(CODE_SNIPPETS[language]);
+    setValue(codeSnippets[language]);
     setRunResults([]);
     setCompileResults([]);
   }, []);
 
-  // When language changes, reset code only if in coding state and not returning from explanation
+  // When language changes, update code to the snippet for that language
   useEffect(() => {
-    // Only reset code if examState is coding and explanationAttempts === 0 (not returning from explanation)
-    if (examState === "coding" && explanationAttempts === 0) {
-      setValue(CODE_SNIPPETS[language]);
-    }
-    // Otherwise, do not reset code (preserve user code after explanation)
-  }, [language /* removed examState from deps to avoid unwanted resets */, /* explanationAttempts intentionally omitted */]);
+    setValue(codeSnippets[language]);
+  }, [language, codeSnippets]);
+
+  // When codeSnippets (i.e., question) changes, reset language, code, and testcases
+  useEffect(() => {
+    setLanguage(defaultLanguage);
+    setValue(codeSnippets[defaultLanguage]);
+    setUserTestcases(testCases);
+    setInternalTests(internalTestCases);
+    // Optionally reset other states if needed
+    // setExamState("coding");
+    // setShowSpeechModal(false);
+    // setExplanationAttempts(0);
+    // setRunResults([]);
+    // setCompileResults([]);
+  }, [codeSnippets, defaultLanguage, testCases, internalTestCases]);
 
   // Handler for submitting explanation
   const handleSubmitExplanation = async () => {
     setShowSpeechModal(false);
     setHasStartedListening(false);
     setHasStoppedListening(false);
-    const question = QUESTION_TEXT;
+    const questionText = question;
     const code = editorRef.current ? editorRef.current.getValue() : value;
     const explanation = speechText;
 
@@ -362,7 +428,7 @@ const CodeEditor = () => {
         const res = await fetch("/python/question_code_exp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question, code, explanation }),
+          body: JSON.stringify({ question: questionText, code, explanation }),
         });
         const data = await res.json();
         const result = (data.result || "").trim();
@@ -438,7 +504,7 @@ const CodeEditor = () => {
       const res = await fetch("/python/question_code_exp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, code, explanation }),
+        body: JSON.stringify({ question: questionText, code, explanation }),
       });
       const data = await res.json();
       const result = (data.result || "").trim();
@@ -517,7 +583,7 @@ const CodeEditor = () => {
         height="45vh"
         theme="vs-dark"
         language={language}
-        defaultValue={CODE_SNIPPETS[language]}
+        defaultValue={codeSnippets[language]}
         onMount={onMount}
         value={value}
         onChange={(val) => setValue(val)} // Always update value state
