@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Questions Form</title>
+  <style>
+    .question-block { border:1px solid #ccc; margin:16px 0; padding:12px; }
+    .testcase-block, .internal-testcase-block { margin-bottom: 8px; }
+    label { display:block; margin-top:8px; }
+    textarea { width:100%; }
+    .codesnippet-block { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Questions Form</h2>
+  <form id="questionsForm">
+    <label>
+      Number of Questions:
+      <input type="number" id="numQuestions" min="1" value="1" />
+    </label>
+    <div id="questionsContainer"></div>
+    <button type="submit">Submit</button>
+  </form>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1481.0.min.js"></script>
+  <script>
+    // AWS DynamoDB configuration
+    AWS.config.update({
+      region: "YOUR_AWS_REGION",
+      accessKeyId: "YOUR_ACCESS_KEY_ID",
+      secretAccessKey: "YOUR_SECRET_ACCESS_KEY"
+    });
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const TABLE_NAME = "YOUR_DYNAMODB_TABLE_NAME";
+
+    const questionsContainer = document.getElementById('questionsContainer');
+    const numQuestionsInput = document.getElementById('numQuestions');
+
+    // Utility: create element with attributes and children
+    function createElement(tag, attrs = {}, ...children) {
+      const el = document.createElement(tag);
+      for (const [key, value] of Object.entries(attrs)) {
+        if (key === 'innerHTML') el.innerHTML = value;
+        else el.setAttribute(key, value);
+      }
+      children.forEach(child => {
+        if (child) el.appendChild(child);
+      });
+      return el;
+    }
+
+    function createInputField(type, name, placeholder, required = true) {
+      return createElement('input', {
+        type,
+        name,
+        placeholder,
+        ...(required ? { required: true } : {})
+      });
+    }
+
+    function createTextArea(name, rows, required = true) {
+      return createElement('textarea', {
+        name,
+        rows,
+        ...(required ? { required: true } : {})
+      });
+    }
+
+    function createFixedTestCaseBlock(name, labelText, count) {
+      const wrapper = createElement('div', { class: name + '-wrapper' });
+      wrapper.appendChild(createElement('label', { innerHTML: labelText }));
+      for (let i = 0; i < count; i++) {
+        const block = createElement('div', { class: name + '-block' });
+        block.appendChild(createInputField('text', `${name}Input[]`, `Input ${i+1}`));
+        block.appendChild(createInputField('text', `${name}Output[]`, `Output ${i+1}`));
+        wrapper.appendChild(block);
+      }
+      return wrapper;
+    }
+
+    function createCodeSnippetsBlock() {
+      const langs = ['java', 'c', 'cpp', 'python', 'javascript'];
+      const wrapper = createElement('div');
+      wrapper.appendChild(createElement('label', { innerHTML: 'Code Snippets:' }));
+      langs.forEach(lang => {
+        const block = createElement('div', { class: 'codesnippet-block' });
+        block.appendChild(createElement('label', { innerHTML: `${lang}:` }));
+        block.appendChild(createTextArea(`codesnippet_${lang}[]`, 3));
+        wrapper.appendChild(block);
+      });
+      return wrapper;
+    }
+
+    function createQuestionBlock(index) {
+      const qDiv = createElement('div', { class: 'question-block' });
+      qDiv.appendChild(createElement('h3', { innerHTML: `Question ${index + 1}` }));
+      qDiv.appendChild(createElement('label', { innerHTML: 'Title:' }, createInputField('text', 'title[]', '', true)));
+      qDiv.appendChild(createElement('label', { innerHTML: 'Question:' }, createTextArea('question[]', 2, true)));
+      qDiv.appendChild(createElement('label', { innerHTML: 'Sample Input:' }, createInputField('text', 'sampleInput[]', '', true)));
+      qDiv.appendChild(createElement('label', { innerHTML: 'Sample Output:' }, createInputField('text', 'sampleOutput[]', '', true)));
+      qDiv.appendChild(createElement('label', { innerHTML: 'Constraints (comma separated):' }, createInputField('text', 'constraints[]', '', true)));
+      qDiv.appendChild(createFixedTestCaseBlock('testcase', 'Test Cases (3)', 3));
+      qDiv.appendChild(createFixedTestCaseBlock('internaltestcase', 'Internal Test Cases (10)', 10));
+      qDiv.appendChild(createCodeSnippetsBlock());
+      return qDiv;
+    }
+
+    function renderQuestions() {
+      questionsContainer.innerHTML = '';
+      const n = parseInt(numQuestionsInput.value, 10) || 1;
+      for (let i = 0; i < n; i++) {
+        questionsContainer.appendChild(createQuestionBlock(i));
+      }
+    }
+
+    function getFieldArray(form, name) {
+      return Array.from(form.querySelectorAll(`[name="${name}[]"]`)).map(input => input.value);
+    }
+
+    function buildQuestionsData(form, numQuestions) {
+      const titles = getFieldArray(form, 'title');
+      const questions = getFieldArray(form, 'question');
+      const sampleInputs = getFieldArray(form, 'sampleInput');
+      const sampleOutputs = getFieldArray(form, 'sampleOutput');
+      const constraints = getFieldArray(form, 'constraints');
+      const testcaseInputs = getFieldArray(form, 'testcaseInput');
+      const testcaseOutputs = getFieldArray(form, 'testcaseOutput');
+      const internalInputs = getFieldArray(form, 'internaltestcaseInput');
+      const internalOutputs = getFieldArray(form, 'internaltestcaseOutput');
+      const codeLangs = ['java', 'c', 'cpp', 'python', 'javascript'];
+      const codeSnippets = {};
+      codeLangs.forEach(lang => {
+        codeSnippets[lang] = getFieldArray(form, `codesnippet_${lang}`);
+      });
+
+      const questionsData = [];
+      for (let i = 0; i < numQuestions; i++) {
+        questionsData.push({
+          title: titles[i],
+          question: questions[i],
+          sampleInput: sampleInputs[i],
+          sampleOutput: sampleOutputs[i],
+          constraints: constraints[i].split(',').map(s => s.trim()).filter(Boolean),
+          testCases: Array.from({length: 3}, (_, j) => ({
+            input: testcaseInputs[i*3 + j],
+            output: testcaseOutputs[i*3 + j]
+          })),
+          internalTestCases: Array.from({length: 10}, (_, j) => ({
+            input: internalInputs[i*10 + j],
+            output: internalOutputs[i*10 + j]
+          })),
+          codeSnippets: {
+            java: codeSnippets.java[i],
+            c: codeSnippets.c[i],
+            cpp: codeSnippets.cpp[i],
+            python: codeSnippets.python[i],
+            javascript: codeSnippets.javascript[i]
+          }
+        });
+      }
+      return questionsData;
+    }
+
+    numQuestionsInput.addEventListener('input', renderQuestions);
+    window.onload = renderQuestions;
+
+    document.getElementById('questionsForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const numQuestions = parseInt(document.getElementById('numQuestions').value, 10) || 1;
+      const questionsData = buildQuestionsData(form, numQuestions);
+
+      // Save each question as a separate item in DynamoDB
+      try {
+        for (const question of questionsData) {
+          const params = {
+            TableName: TABLE_NAME,
+            Item: {
+              id: Date.now().toString() + Math.random().toString(36).substring(2), // simple unique id
+              ...question
+            }
+          };
+          await docClient.put(params).promise();
+        }
+        alert('Questions saved to AWS DynamoDB!');
+        form.reset();
+        renderQuestions();
+      } catch (err) {
+        alert('Error saving to AWS: ' + err.message);
+      }
+    };
+  </script>
+</body>
+</html>
